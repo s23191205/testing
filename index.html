@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Paper 2 Calm Corner · Gentle Revision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f7f4ec;
+    --cream-2:#fbf9f3;
+    --paper:#ffffff;
+    --sage:#7fa087;
+    --sage-deep:#5c7e64;
+    --sage-soft:#e4ede4;
+    --sky:#8fb3c9;
+    --sky-soft:#e3eef3;
+    --sand:#e8d9b5;
+    --apricot:#f0c39a;
+    --ink:#3d4a40;
+    --ink-soft:#6b756c;
+    --line:#e6e1d6;
+    --shadow:0 10px 30px -12px rgba(60,74,64,.18);
+    --shadow-sm:0 4px 14px -8px rgba(60,74,64,.22);
+    --radius:22px;
+    --radius-sm:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Nunito',system-ui,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, var(--sky-soft), transparent 60%),
+      radial-gradient(1000px 500px at 0% 110%, var(--sage-soft), transparent 55%),
+      var(--cream);
+    color:var(--ink);
+    line-height:1.6;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:28px 20px 80px;}
+  h1,h2,h3,.serif{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.01em;}
+
+  /* ---------- Header ---------- */
+  header.hero{
+    text-align:center;padding:26px 18px 14px;
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--paper);border:1px solid var(--line);
+    padding:7px 16px;border-radius:999px;font-size:.82rem;font-weight:700;
+    color:var(--sage-deep);box-shadow:var(--shadow-sm);margin-bottom:16px;
+  }
+  .badge .dot{width:9px;height:9px;border-radius:50%;background:var(--sage);}
+  header.hero h1{font-size:clamp(2rem,5vw,3rem);line-height:1.08;color:var(--ink);}
+  header.hero p.sub{
+    margin:14px auto 0;max-width:560px;color:var(--ink-soft);font-size:1.05rem;
+  }
+  .reassure{
+    margin:20px auto 0;max-width:600px;background:var(--cream-2);
+    border:1px dashed var(--sand);border-radius:var(--radius-sm);
+    padding:13px 20px;font-size:.95rem;color:var(--ink-soft);
+  }
+  .reassure b{color:var(--sage-deep);font-weight:700;}
+
+  /* ---------- Dashboard ---------- */
+  .dash{
+    display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px;
+  }
+  @media(max-width:720px){.dash{grid-template-columns:1fr;}}
+  .card-pick{
+    position:relative;overflow:hidden;cursor:pointer;border:none;text-align:left;
+    background:var(--paper);border-radius:var(--radius);padding:30px 28px 26px;
+    box-shadow:var(--shadow);transition:transform .25s ease, box-shadow .25s ease;
+    font-family:inherit;color:inherit;
+  }
+  .card-pick:hover,.card-pick:focus-visible{transform:translateY(-5px);box-shadow:0 18px 40px -16px rgba(60,74,64,.28);outline:none;}
+  .card-pick:focus-visible{box-shadow:0 0 0 3px var(--sky), var(--shadow);}
+  .card-pick .ico{
+    width:56px;height:56px;border-radius:16px;display:grid;place-items:center;margin-bottom:16px;
+  }
+  .ico.green{background:var(--sage-soft);}
+  .ico.blue{background:var(--sky-soft);}
+  .card-pick h2{font-size:1.5rem;color:var(--ink);}
+  .card-pick .tag{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--sage-deep);margin-bottom:6px;display:block;}
+  .card-pick p{color:var(--ink-soft);margin-top:8px;font-size:.96rem;}
+  .card-pick .go{
+    margin-top:18px;display:inline-flex;align-items:center;gap:7px;
+    font-weight:800;color:var(--sage-deep);font-size:.95rem;
+  }
+  .card-pick .corner{position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;opacity:.5;}
+  .corner.green{background:var(--sage-soft);}
+  .corner.blue{background:var(--sky-soft);}
+
+  /* ---------- Screens ---------- */
+  .screen{display:none;animation:fade .4s ease;}
+  .screen.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;flex-wrap:wrap;}
+  .back{
+    background:var(--paper);border:1px solid var(--line);border-radius:999px;
+    padding:9px 18px;font-weight:700;color:var(--ink);cursor:pointer;font-family:inherit;font-size:.9rem;
+    display:inline-flex;align-items:center;gap:7px;transition:background .2s;
+  }
+  .back:hover{background:var(--cream-2);}
+  .progress-wrap{flex:1;min-width:160px;}
+  .progress-label{font-size:.8rem;color:var(--ink-soft);font-weight:700;margin-bottom:5px;display:flex;justify-content:space-between;}
+  .bar{height:10px;background:var(--sage-soft);border-radius:999px;overflow:hidden;}
+  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--sage),var(--sky));border-radius:999px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+
+  .panel{
+    background:var(--paper);border-radius:var(--radius);padding:30px 30px 34px;
+    box-shadow:var(--shadow);margin-top:18px;
+  }
+  @media(max-width:560px){.panel{padding:24px 18px 28px;}}
+  .panel h2{font-size:1.6rem;color:var(--ink);}
+  .panel .prompt{color:var(--ink-soft);margin-top:6px;font-size:1rem;}
+  .pill{
+    display:inline-block;background:var(--sky-soft);color:var(--sage-deep);
+    font-weight:800;font-size:.82rem;padding:5px 14px;border-radius:999px;margin-top:4px;
+  }
+
+  /* ---------- Game 1: layout builder ---------- */
+  .layout-zone{margin-top:22px;display:flex;flex-direction:column;gap:11px;}
+  .slot{
+    border:2px dashed var(--line);border-radius:var(--radius-sm);min-height:56px;
+    display:flex;align-items:center;padding:6px;background:var(--cream-2);transition:border-color .2s,background .2s;
+  }
+  .slot.over{border-color:var(--sage);background:var(--sage-soft);}
+  .slot.filled{border-style:solid;border-color:var(--sage-soft);background:var(--paper);}
+  .slot.correct{border-color:var(--sage);background:var(--sage-soft);}
+  .slotnum{
+    width:34px;height:34px;border-radius:9px;background:var(--sky-soft);color:var(--sage-deep);
+    font-weight:800;display:grid;place-items:center;margin:0 12px 0 6px;flex:none;font-size:.95rem;
+  }
+  .slot .placeholder{color:var(--ink-soft);font-size:.9rem;font-style:italic;}
+
+  .chips{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+  .chip{
+    background:var(--paper);border:1px solid var(--line);border-radius:12px;
+    padding:12px 18px;font-weight:700;color:var(--ink);cursor:grab;box-shadow:var(--shadow-sm);
+    user-select:none;transition:transform .15s,box-shadow .15s,opacity .2s;font-size:.95rem;
+    touch-action:none;
+  }
+  .chip:hover{transform:translateY(-2px);box-shadow:0 8px 18px -10px rgba(60,74,64,.3);}
+  .chip.dragging{opacity:.4;}
+  .chip.placed{display:none;}
+  .chip-in-slot{
+    background:var(--sage-soft);border:1px solid var(--sage);border-radius:11px;
+    padding:10px 16px;font-weight:700;color:var(--sage-deep);cursor:grab;font-size:.95rem;
+    display:flex;align-items:center;gap:8px;flex:1;
+  }
+  .chip-in-slot .grip{color:var(--sage);font-size:.85rem;}
+
+  .chips-hint{text-align:center;color:var(--ink-soft);font-size:.86rem;margin-top:10px;}
+
+  /* ---------- Game 2: sentence patterns ---------- */
+  .sentence-box{
+    margin-top:22px;background:var(--cream-2);border:1px solid var(--line);
+    border-radius:var(--radius-sm);padding:22px 22px;font-size:1.2rem;line-height:1.9;
+    text-align:center;color:var(--ink);
+  }
+  .blank{
+    display:inline-block;min-width:120px;border-bottom:3px solid var(--apricot);
+    margin:0 4px;font-weight:800;color:var(--sage-deep);text-align:center;
+    transition:background .2s;border-radius:6px 6px 0 0;padding:0 6px;
+  }
+  .blank.empty{color:var(--apricot);}
+  .options{margin-top:24px;display:flex;flex-direction:column;gap:11px;}
+  .opt{
+    background:var(--paper);border:2px solid var(--line);border-radius:var(--radius-sm);
+    padding:15px 18px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;
+    font-family:inherit;font-size:1rem;transition:all .18s;display:flex;align-items:center;gap:12px;
+  }
+  .opt:hover:not(:disabled){border-color:var(--sky);transform:translateX(3px);}
+  .opt .key{width:30px;height:30px;border-radius:8px;background:var(--cream-2);display:grid;place-items:center;font-size:.9rem;color:var(--ink-soft);flex:none;}
+  .opt.right{border-color:var(--sage);background:var(--sage-soft);color:var(--sage-deep);}
+  .opt.right .key{background:var(--sage);color:#fff;}
+  .opt.wrong{border-color:var(--apricot);background:#fdf1e6;}
+  .opt:disabled{cursor:default;}
+
+  /* ---------- Feedback ---------- */
+  .feedback{
+    margin-top:20px;border-radius:var(--radius-sm);padding:16px 20px;font-weight:600;
+    display:none;align-items:flex-start;gap:12px;animation:fade .35s ease;
+  }
+  .feedback.show{display:flex;}
+  .feedback.good{background:var(--sage-soft);color:var(--sage-deep);}
+  .feedback.gentle{background:var(--sky-soft);color:#436b82;}
+  .feedback .fico{font-size:1.4rem;line-height:1;flex:none;}
+  .feedback b{font-weight:800;}
+
+  .actions{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+  .btn{
+    border:none;border-radius:999px;padding:13px 26px;font-weight:800;font-family:inherit;
+    font-size:.98rem;cursor:pointer;transition:transform .15s,box-shadow .15s,background .2s;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--sage);color:#fff;box-shadow:0 8px 18px -8px rgba(92,126,100,.7);}
+  .btn-primary:hover{background:var(--sage-deep);}
+  .btn-ghost{background:var(--paper);color:var(--ink);border:1px solid var(--line);}
+  .btn-ghost:hover{background:var(--cream-2);}
+  .btn[disabled]{opacity:.45;cursor:not-allowed;}
+
+  /* ---------- Reveal / model answer ---------- */
+  .model{
+    margin-top:18px;background:var(--cream-2);border-left:4px solid var(--sage);
+    border-radius:10px;padding:14px 18px;font-size:.95rem;color:var(--ink-soft);display:none;
+  }
+  .model.show{display:block;animation:fade .3s ease;}
+  .model b{color:var(--sage-deep);}
+
+  /* ---------- Done screen ---------- */
+  .done{
+    text-align:center;background:var(--paper);border-radius:var(--radius);
+    padding:46px 30px;box-shadow:var(--shadow);margin-top:18px;
+  }
+  .done .big{font-size:3.2rem;}
+  .done h2{font-size:1.9rem;margin-top:10px;color:var(--ink);}
+  .done p{color:var(--ink-soft);margin-top:10px;max-width:440px;margin-left:auto;margin-right:auto;}
+  .done .stat{
+    display:inline-block;margin-top:18px;background:var(--sage-soft);color:var(--sage-deep);
+    font-weight:800;padding:10px 22px;border-radius:999px;
+  }
+
+  footer{text-align:center;color:var(--ink-soft);font-size:.82rem;margin-top:36px;}
+  .breathe{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--sage);margin-right:6px;animation:breathe 4s ease-in-out infinite;vertical-align:middle;}
+  @keyframes breathe{0%,100%{transform:scale(1);opacity:.6;}50%{transform:scale(1.6);opacity:1;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HOME / DASHBOARD ============ -->
+  <section id="home" class="screen active">
+    <header class="hero">
+      <span class="badge"><span class="dot"></span> Paper 2 · Calm Corner</span>
+      <h1>Let's revise, gently.</h1>
+      <p class="sub">A quiet space to practise your Writing Paper text types and useful sentence patterns. No marks, no timer, no pressure — just you, getting a little more ready.</p>
+      <div class="reassure">
+        <span class="breathe"></span><b>You don't have to be perfect.</b> Every try teaches your brain something. Mistakes here are completely safe — they're how learning happens.
+      </div>
+    </header>
+
+    <div class="dash">
+      <button class="card-pick" onclick="startLayout()" aria-label="Practise text type layouts">
+        <span class="corner green"></span>
+        <span class="ico green" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5c7e64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+        </span>
+        <span class="tag">Section 1</span>
+        <h2>Build the Layout</h2>
+        <p>Put the parts of each text type in the right order — forum post, film review, diary, blog, formal email. Drag, drop, breathe.</p>
+        <span class="go">Start gently →</span>
+      </button>
+
+      <button class="card-pick" onclick="startPatterns()" aria-label="Practise useful sentence patterns">
+        <span class="corner blue"></span>
+        <span class="ico blue" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#436b82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/><path d="M7 12h.01M11 12h.01M15 12h.01"/></svg>
+        </span>
+        <span class="tag">Section 2</span>
+        <h2>Useful Sentence Patterns</h2>
+        <p>Slot the right phrase into model sentences from Modules 3, 4 &amp; 5. Spot the pattern, build the confidence.</p>
+        <span class="go">Start gently →</span>
+      </button>
+    </div>
+
+    <footer>Made for your revision · Take a deep breath whenever you need one 🌿</footer>
+  </section>
+
+  <!-- ============ GAME 1: LAYOUT BUILDER ============ -->
+  <section id="layout" class="screen">
+    <div class="topbar">
+      <button class="back" onclick="goHome()">← Calm Corner</button>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Layout practice</span><span id="layoutProg">1 / 5</span></div>
+        <div class="bar"><i id="layoutBar"></i></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 id="layoutTitle">Forum Post</h2>
+      <p class="prompt" id="layoutPrompt">Drag each part into the right order. There's no rush — move things around until it feels right.</p>
+
+      <div class="layout-zone" id="slots"></div>
+      <div class="chips" id="chips"></div>
+      <p class="chips-hint">Tip: tap a part then tap a slot, or drag it across. You can always move them again.</p>
+
+      <div class="feedback" id="layoutFb"><span class="fico" id="layoutFbIco">🌱</span><span id="layoutFbTxt"></span></div>
+      <div class="model" id="layoutModel"></div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="layoutCheck" onclick="checkLayout()">Check my order</button>
+        <button class="btn btn-ghost" id="layoutNext" onclick="nextLayout()" style="display:none">Next text type →</button>
+        <button class="btn btn-ghost" onclick="showLayoutHint()">Show me the layout</button>
+      </div>
+    </div>
+    <footer>You're doing the work — that's what counts. 🌿</footer>
+  </section>
+
+  <!-- ============ GAME 2: SENTENCE PATTERNS ============ -->
+  <section id="patterns" class="screen">
+    <div class="topbar">
+      <button class="back" onclick="goHome()">← Calm Corner</button>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Sentence patterns</span><span id="patProg">1 / 7</span></div>
+        <div class="bar"><i id="patBar"></i></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <span class="pill" id="patModule">Module 3</span>
+      <h2 style="margin-top:8px;">Complete the pattern</h2>
+      <p class="prompt" id="patPrompt">Which phrase finishes this useful sentence pattern? Take your time.</p>
+
+      <div class="sentence-box" id="patSentence"></div>
+      <div class="options" id="patOptions"></div>
+
+      <div class="feedback" id="patFb"><span class="fico" id="patFbIco">🌱</span><span id="patFbTxt"></span></div>
+      <div class="model" id="patModel"></div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="patNext" onclick="nextPattern()" style="display:none">Next pattern →</button>
+        <button class="btn btn-ghost" onclick="showPatHint()">Show me the answer</button>
+      </div>
+    </div>
+    <footer>Patterns get easier every time you meet them. 🌿</footer>
+  </section>
+
+  <!-- ============ DONE ============ -->
+  <section id="done" class="screen">
+    <div class="done">
+      <div class="big" id="doneIco">🌟</div>
+      <h2 id="doneTitle">Nicely done.</h2>
+      <p id="doneMsg"></p>
+      <div class="stat" id="doneStat"></div>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="goHome()">Back to Calm Corner</button>
+        <button class="btn btn-ghost" id="doneReplay">Try this again</button>
+      </div>
+    </div>
+    <footer>However it went today, you showed up. That matters. 🌿</footer>
+  </section>
+
+</div>
+
+<script>
+/* =========================================================
+   DATA — straight from the exam scope (Appendix 2)
+   ========================================================= */
+const TEXT_TYPES = [
+  {
+    name:"Forum Post",
+    note:"A forum post ends with who posted it and when.",
+    parts:["Paragraph 1: Introduction","Paragraph 2: Main idea","Paragraph 3: Main idea","Paragraph 4: Closing","Posted by: [Name], [Time]  (e.g. Peter, 09:30 a.m.)"]
+  },
+  {
+    name:"A Film Review",
+    note:"A film review opens with a Title, then the four paragraphs.",
+    parts:["Title","Paragraph 1: Introduction","Paragraph 2: Main idea","Paragraph 3: Main idea","Paragraph 4: Closing"]
+  },
+  {
+    name:"A Diary Entry",
+    note:"A diary entry starts with the Date, then \"Dear Diary,\".",
+    parts:["Date","Dear Diary,","Paragraph 1: Introduction","Paragraph 2: Main idea","Paragraph 3: Main idea","Paragraph 4: Closing"]
+  },
+  {
+    name:"A Blog Post",
+    note:"A blog post begins with a Title, just like a review.",
+    parts:["Title","Paragraph 1: Introduction","Paragraph 2: Main idea","Paragraph 3: Main idea","Paragraph 4: Closing"]
+  },
+  {
+    name:"A Formal Email",
+    note:"A formal email opens with \"Dear ___,\" and signs off \"Yours faithfully / sincerely,\" then your name.",
+    parts:["Dear ___________,","Paragraph 1: Introduction","Paragraph 2: Main idea","Paragraph 3: Main idea","Paragraph 4: Closing","Yours faithfully, / Yours sincerely,","XXX (your name)"]
+  }
+];
+
+/* Useful sentence patterns (Appendix 2) */
+const PATTERNS = [
+  {
+    module:"Module 3",
+    display:'Not only did she <b>win the race</b>, but she <span class="blank empty">______</span> broke the record.',
+    sentence:'Not only did she win the race, but she ___ broke the record.',
+    answer:"also",
+    options:["also","then","never"],
+    pattern:"Not only did + [Subject] + [Verb 1], but + [Subject] + also + [Verb 2].",
+    why:"The pattern is \"Not only did… but [Subject] + also + [Verb 2].\" The word also signals the second amazing thing."
+  },
+  {
+    module:"Module 3",
+    display:'The film was <span class="blank empty">______</span> exciting that I forgot to eat my popcorn.',
+    sentence:'The film was ___ exciting that I forgot to eat my popcorn.',
+    answer:"so",
+    options:["so","very","too"],
+    pattern:"[Subject] + was/were + so + [Adjective] + that + [Result Sentence].",
+    why:"\"so + adjective + that + result\" shows cause and effect. So exciting → that I forgot my popcorn."
+  },
+  {
+    module:"Module 3",
+    display:'It is one of the <span class="blank empty">______</span> films I have ever watched.',
+    sentence:'It is one of the ___ films I have ever watched.',
+    answer:"most exciting",
+    options:["most exciting","more exciting","exciting"],
+    pattern:"One of the + [superlative adjective] + [plural noun] + [singular \u201cbe\u201d]…",
+    why:"\"One of the…\" always needs a superlative (most exciting) plus a plural noun (films)."
+  },
+  {
+    module:"Module 4",
+    display:'<span class="blank empty">______</span> my teacher, I finally understood the topic.',
+    sentence:'___ my teacher, I finally understood the topic.',
+    answer:"Thanks to",
+    options:["Thanks to","Because","Thank you"],
+    pattern:"Thanks to + [Noun/Person], + [SVO].",
+    why:"\"Thanks to + person/noun\" introduces who or what helped, then a full sentence follows."
+  },
+  {
+    module:"Module 4",
+    display:'I highly <span class="blank empty">______</span> this film to anyone who enjoys adventure.',
+    sentence:'I highly ___ this film to anyone who enjoys adventure.',
+    answer:"recommend",
+    options:["recommend","recommended","recommending"],
+    pattern:"I highly recommend + [Title/Idea] + to anyone who enjoys + [Gerund/Noun].",
+    why:"After \"I highly\" we use the base verb recommend. Then \"to anyone who enjoys + …ing\"."
+  },
+  {
+    module:"Module 5",
+    display:'I felt a <span class="blank empty">______</span> of freedom when I reached the mountain top.',
+    sentence:'I felt a ___ of freedom when I reached the mountain top.',
+    answer:"sense",
+    options:["sense","piece","lot"],
+    pattern:"I felt a sense of + [Noun] + when I + [Verb-ed] + [Object].",
+    why:"The fixed phrase is \"a sense of + feeling\" — a sense of freedom, a sense of pride."
+  },
+  {
+    module:"Module 5",
+    display:'<span class="blank empty">______</span> abroad is the best decision I have ever made!',
+    sentence:'___ abroad is the best decision I have ever made!',
+    answer:"Travelling",
+    options:["Travelling","Travel","To travelled"],
+    pattern:"[Verb-ing] + [Object] + is the best decision I have ever made!",
+    why:"This pattern starts with a verb + ing (a gerund) acting as the subject: Travelling abroad is…"
+  }
+];
+
+/* =========================================================
+   GROWTH-MINDSET FEEDBACK
+   ========================================================= */
+const PRAISE = [
+  "Beautifully ordered — your brain is building the map.",
+  "That's exactly right. See how it's starting to click?",
+  "Spot on. You're getting the feel for this structure.",
+  "Lovely work. You knew this — and now you really know it.",
+  "Yes! That's the shape of it. Well done."
+];
+const GENTLE = [
+  "Not quite yet — and that's completely fine. Let's look together.",
+  "Almost there. This bit is tricky for everyone, so be kind to yourself.",
+  "Good attempt. One small change and you've got it — try again or peek below.",
+  "So close. Mistakes like this are how the pattern sticks. Have another go."
+];
+const PRAISE_P = [
+  "Yes — that's the one. You spotted the pattern.",
+  "Correct, and nicely chosen. That's growing easier for you.",
+  "Exactly right. Trust that instinct — it's getting sharper.",
+  "Perfect fit. Well noticed."
+];
+const GENTLE_P = [
+  "Not this time — and that's okay. Here's the why:",
+  "Gentle miss. Have a look at how it works:",
+  "Close one. Let's understand it together:"
+];
+const rand = a => a[Math.floor(Math.random()*a.length)];
+
+/* =========================================================
+   SCREEN HELPERS
+   ========================================================= */
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goHome(){ show('home'); }
+
+/* =========================================================
+   GAME 1 — LAYOUT BUILDER
+   ========================================================= */
+let lIdx=0, lOrder=[], lSolved=0, lDragEl=null, lSelectedChip=null;
+
+function startLayout(){ lIdx=0; lSolved=0; show('layout'); renderLayout(); }
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  // guard against accidentally-correct shuffle
+  if(a.every((v,i)=>v===arr[i]) && arr.length>1){[a[0],a[1]]=[a[1],a[0]];}
+  return a;
+}
+
+function renderLayout(){
+  const tt = TEXT_TYPES[lIdx];
+  document.getElementById('layoutTitle').textContent = tt.name;
+  document.getElementById('layoutProg').textContent = `${lIdx+1} / ${TEXT_TYPES.length}`;
+  document.getElementById('layoutBar').style.width = `${(lIdx)/TEXT_TYPES.length*100}%`;
+  document.getElementById('layoutPrompt').textContent =
+    "Drag each part into the right order. There's no rush — move things around until it feels right.";
+
+  // reset state
+  lOrder = new Array(tt.parts.length).fill(null);
+  lSelectedChip = null;
+  const fb=document.getElementById('layoutFb'); fb.classList.remove('show');
+  document.getElementById('layoutModel').classList.remove('show');
+  document.getElementById('layoutNext').style.display='none';
+  document.getElementById('layoutCheck').style.display='inline-block';
+  document.getElementById('layoutCheck').disabled=false;
+
+  // build slots
+  const slots=document.getElementById('slots'); slots.innerHTML='';
+  tt.parts.forEach((_,i)=>{
+    const s=document.createElement('div');
+    s.className='slot'; s.dataset.slot=i;
+    s.innerHTML=`<span class="slotnum">${i+1}</span><span class="placeholder">drop a part here…</span>`;
+    addSlotEvents(s);
+    slots.appendChild(s);
+  });
+
+  // build chips (shuffled)
+  const chips=document.getElementById('chips'); chips.innerHTML='';
+  shuffle(tt.parts).forEach(text=>{
+    const c=document.createElement('div');
+    c.className='chip'; c.draggable=true; c.textContent=text; c.dataset.text=text;
+    addChipEvents(c);
+    chips.appendChild(c);
+  });
+}
+
+function addChipEvents(c){
+  c.addEventListener('dragstart',e=>{ lDragEl=c; c.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; });
+  c.addEventListener('dragend',()=>{ c.classList.remove('dragging'); lDragEl=null; });
+  c.addEventListener('click',()=>{
+    // tap-to-select
+    if(lSelectedChip===c){ lSelectedChip=null; c.style.outline=''; return; }
+    document.querySelectorAll('.chip').forEach(x=>x.style.outline='');
+    lSelectedChip=c; c.style.outline='3px solid var(--sky)';
+  });
+}
+
+function addSlotEvents(s){
+  s.addEventListener('dragover',e=>{ e.preventDefault(); s.classList.add('over'); });
+  s.addEventListener('dragleave',()=>s.classList.remove('over'));
+  s.addEventListener('drop',e=>{
+    e.preventDefault(); s.classList.remove('over');
+    if(lDragEl){ placeInSlot(lDragEl.dataset.text, lDragEl, s); }
+  });
+  s.addEventListener('click',()=>{
+    if(lSelectedChip){
+      placeInSlot(lSelectedChip.dataset.text, lSelectedChip, s);
+      document.querySelectorAll('.chip').forEach(x=>x.style.outline='');
+      lSelectedChip=null;
+    }
+  });
+}
+
+function placeInSlot(text, chipEl, slotEl){
+  const idx=+slotEl.dataset.slot;
+  // if slot already has something, return that text to the tray
+  if(lOrder[idx]!==null){ returnChip(lOrder[idx]); }
+  lOrder[idx]=text;
+
+  // hide source chip if it came from tray
+  if(chipEl && chipEl.classList.contains('chip')) chipEl.classList.add('placed');
+  // if it came from another slot, clear that slot
+  if(chipEl && chipEl.classList.contains('chip-in-slot')){
+    const old=chipEl.closest('.slot'); if(old){ lOrder[+old.dataset.slot]=null; resetSlot(old); }
+  }
+
+  // render the slot content
+  slotEl.classList.add('filled');
+  slotEl.innerHTML=`<span class="slotnum">${idx+1}</span>`;
+  const inner=document.createElement('div');
+  inner.className='chip-in-slot'; inner.draggable=true; inner.dataset.text=text;
+  inner.innerHTML=`<span class="grip">⋮⋮</span>${text}`;
+  inner.addEventListener('dragstart',e=>{ lDragEl=inner; e.dataTransfer.effectAllowed='move'; });
+  inner.addEventListener('click',(e)=>{ e.stopPropagation(); returnChip(text); lOrder[idx]=null; resetSlot(slotEl); });
+  slotEl.appendChild(inner);
+}
+
+function resetSlot(slotEl){
+  const idx=+slotEl.dataset.slot;
+  slotEl.classList.remove('filled','correct');
+  slotEl.innerHTML=`<span class="slotnum">${idx+1}</span><span class="placeholder">drop a part here…</span>`;
+}
+
+function returnChip(text){
+  const chip=[...document.querySelectorAll('.chip')].find(c=>c.dataset.text===text);
+  if(chip) chip.classList.remove('placed');
+}
+
+function checkLayout(){
+  const tt=TEXT_TYPES[lIdx];
+  if(lOrder.includes(null)){
+    flashLayout('gentle','🧩',"Pop every part into a slot first — then I'll check it with you.");
+    return;
+  }
+  const correct = lOrder.every((v,i)=>v===tt.parts[i]);
+  const fb=document.getElementById('layoutFb');
+  if(correct){
+    document.querySelectorAll('#slots .slot').forEach(s=>s.classList.add('correct'));
+    flashLayout('good','🌟', rand(PRAISE)+`  <b>${tt.name}</b> — sorted.`);
+    document.getElementById('layoutCheck').style.display='none';
+    document.getElementById('layoutNext').style.display='inline-block';
+    document.getElementById('layoutBar').style.width=`${(lIdx+1)/TEXT_TYPES.length*100}%`;
+    lSolved++;
+  } else {
+    flashLayout('gentle','🌱', rand(GENTLE));
+  }
+}
+
+function flashLayout(type,ico,txt){
+  const fb=document.getElementById('layoutFb');
+  fb.className='feedback show '+type;
+  document.getElementById('layoutFbIco').textContent=ico;
+  document.getElementById('layoutFbTxt').innerHTML=txt;
+}
+
+function showLayoutHint(){
+  const tt=TEXT_TYPES[lIdx];
+  const m=document.getElementById('layoutModel');
+  m.innerHTML=`<b>The ${tt.name} layout:</b> ${tt.note}<br><br>`+
+    tt.parts.map((p,i)=>`${i+1}. ${p}`).join('<br>');
+  m.classList.add('show');
+}
+
+function nextLayout(){
+  if(lIdx < TEXT_TYPES.length-1){ lIdx++; renderLayout(); }
+  else{ finishLayout(); }
+}
+
+function finishLayout(){
+  show('done');
+  document.getElementById('doneIco').textContent='🌳';
+  document.getElementById('doneTitle').textContent='All five layouts — done.';
+  document.getElementById('doneMsg').textContent=
+    "You just walked through every Paper 2 text type. Knowing the shape of your writing means one less thing to worry about on exam day.";
+  document.getElementById('doneStat').textContent=`Text types practised: ${lSolved} / ${TEXT_TYPES.length}`;
+  document.getElementById('doneReplay').onclick=startLayout;
+}
+
+/* =========================================================
+   GAME 2 — SENTENCE PATTERNS
+   ========================================================= */
+let pIdx=0, pScore=0, pAnswered=false;
+
+function startPatterns(){ pIdx=0; pScore=0; show('patterns'); renderPattern(); }
+
+function renderPattern(){
+  pAnswered=false;
+  const q=PATTERNS[pIdx];
+  document.getElementById('patProg').textContent=`${pIdx+1} / ${PATTERNS.length}`;
+  document.getElementById('patBar').style.width=`${pIdx/PATTERNS.length*100}%`;
+  document.getElementById('patModule').textContent=q.module;
+  document.getElementById('patSentence').innerHTML=q.display;
+  document.getElementById('patPrompt').textContent="Which phrase finishes this useful sentence pattern? Take your time.";
+
+  const fb=document.getElementById('patFb'); fb.classList.remove('show');
+  document.getElementById('patModel').classList.remove('show');
+  document.getElementById('patNext').style.display='none';
+
+  const opts=document.getElementById('patOptions'); opts.innerHTML='';
+  const keys=['A','B','C','D'];
+  shuffle(q.options).forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.innerHTML=`<span class="key">${keys[i]}</span><span>${o}</span>`;
+    b.onclick=()=>answerPattern(b,o,q);
+    opts.appendChild(b);
+  });
+}
+
+function answerPattern(btn,choice,q){
+  if(pAnswered) return;
+  pAnswered=true;
+  const right = choice===q.answer;
+  document.querySelectorAll('#patOptions .opt').forEach(b=>{
+    b.disabled=true;
+    const t=b.querySelector('span:last-child').textContent;
+    if(t===q.answer) b.classList.add('right');
+  });
+  if(!right) btn.classList.add('wrong');
+
+  // fill the blank with the correct word
+  const blank=document.querySelector('#patSentence .blank');
+  if(blank){ blank.classList.remove('empty'); blank.textContent=q.answer; }
+
+  const fb=document.getElementById('patFb');
+  if(right){
+    fb.className='feedback show good';
+    document.getElementById('patFbIco').textContent='🌟';
+    document.getElementById('patFbTxt').innerHTML=rand(PRAISE_P);
+    pScore++;
+  }else{
+    fb.className='feedback show gentle';
+    document.getElementById('patFbIco').textContent='🌱';
+    document.getElementById('patFbTxt').innerHTML=rand(GENTLE_P);
+  }
+  // model / pattern reminder always shown so it's a learning moment
+  const m=document.getElementById('patModel');
+  m.innerHTML=`<b>Pattern:</b> ${q.pattern}<br><br>${q.why}`;
+  m.classList.add('show');
+  document.getElementById('patBar').style.width=`${(pIdx+1)/PATTERNS.length*100}%`;
+  document.getElementById('patNext').style.display='inline-block';
+}
+
+function showPatHint(){
+  if(pAnswered) return;
+  const q=PATTERNS[pIdx];
+  const btn=[...document.querySelectorAll('#patOptions .opt')]
+    .find(b=>b.querySelector('span:last-child').textContent===q.answer);
+  if(btn) answerPattern(btn,q.answer,q);
+}
+
+function nextPattern(){
+  if(pIdx < PATTERNS.length-1){ pIdx++; renderPattern(); }
+  else{ finishPatterns(); }
+}
+
+function finishPatterns(){
+  show('done');
+  document.getElementById('doneIco').textContent='🌟';
+  document.getElementById('doneTitle').textContent='Seven patterns explored.';
+  let msg = "Every one of these patterns is a ready-made sentence you can borrow in the exam. You've met them all now — they'll feel familiar when you need them.";
+  document.getElementById('doneMsg').textContent=msg;
+  document.getElementById('doneStat').textContent=`Patterns matched: ${pScore} / ${PATTERNS.length}`;
+  document.getElementById('doneReplay').onclick=startPatterns;
+}
+</script>
+</body>
+</html>
